@@ -4,7 +4,7 @@
 
 ![The agent floor in Kestrel Harbor: with one reviewer, work piles up in front of review; a second reviewer stops the line growing, and a third clears it](docs/media/town-demo.gif)
 
-**Try it live:** `https://OWNER.github.io/REPO/` (placeholder: available once this repository is published with GitHub Pages turned on). Until then, open `index.html` from a download; it works offline.
+**Try it live:** open the website link in this repository's About panel (on GitHub, top right on desktop, under the repository name on a phone). It runs in the browser, and the lessons are under `/lessons/`. It also runs offline: download the repository and open `index.html`.
 
 Kestrel Harbor is a free, offline practicum for owners and operators who use AI (artificial intelligence) agents and are not engineers. A model town runs on one clock: trucks, a bike plant, a clinic desk and an agent floor where agents research, plan and carry out tasks, people review the work, and a shift lead approves some of it. Every task leaves a trace, so you can watch where the work piles up, what a check catches, and what a checkpoint stops.
 
