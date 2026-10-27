@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trace Versus Dashboard</title><meta name="description" content="Lesson 2 of 8: an average of finished work hides the waiting; one task's timeline shows where its time went.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 2 of 8</span></div>
+<h1>What does a trace show that a dashboard hides?</h1>
+
+<p>Your weekly report says jobs take "about two hours on average." Then a customer calls, upset, because their job took most of the day. Both are true. The average blends many jobs into one number, and it only counts the ones that finished.</p>
+
+<p class="idea">An average tells you how long finished work took. A trace of one task tells you where its time went: how much was work and how much was waiting, and where.</p>
+
+<p>A <strong>trace</strong> is a timeline for one piece of work. Each time the task moves, the system writes a line in a log: when it arrived, when each step started and ended, who reviewed it, and what stopped it.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With one reviewer, task T-064 arrived at 12:16 and finished at 15:50, 214 minutes later. How many of those minutes do you think someone or something was actually working on it?</p></div>
+
+<details class="reveal"><summary>Show the trace</summary>
+<p>Only <strong>16 minutes</strong> were work. The other <strong>198 minutes</strong> were waiting, all of them in line for review.</p>
+<div class="card" role="img" aria-label="Task T-064: 16 minutes working, 198 minutes waiting"><h3>Task T-064, 214 minutes</h3>
+<div class="trace"><div class="work" style="flex:10"></div><div class="wait" style="flex:198"></div><div class="work" style="flex:6"></div></div>
+<p class="note">Solid: agents working (10 min), then review (6 min). Striped: waiting (198 min).</p></div>
+<p>Count the whole shift in task-minutes: ten tasks waiting one minute is ten task-minutes. 87% of all the task-minutes on the floor were spent waiting. The dashboard number, an average of 117 minutes for finished tasks, cannot tell you that. It also says nothing about the 56 tasks still in the system, whose waits are not over yet.</p>
+<p>Two averages appear in these lessons. <em>Average time to finish</em> counts only tasks that are done. <em>Average time in the system</em> counts every task that has arrived, done or not.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 1</strong>, and let it run to about 12:00.</li>
+<li>In <strong>Follow one task</strong>, pick a task. Read the bar: solid is work, striped is waiting. Look for the <strong>Human approval</strong> and <strong>Sent back</strong> marks.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>An accounting firm reports that tax returns take "three days on average" from upload to filing. What single question would a trace of one late return answer that the average cannot?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>Pick one late item from last week. Write down when it arrived, when each step started and ended, and who touched it. Add up the minutes nobody was working on it. That is your first trace.</p></div>
+
+<p class="note">Numbers come from the same illustrative model as the town, with fixed task times.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. This prompt adds a log and a one-task timeline to the simulator from lesson 1. It is a starter for learning, not a monitoring tool. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Time in the system = time working + time waiting. An average shows the total; a trace shows the split, and where the waiting happened.</p></div>
+<p>The town itself is built in the same four layers your page will have:</p>
+<div class="card map"><svg class="km" id="town-inside" viewBox="0 0 340 358" role="img" aria-labelledby="town-inside-t" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:520px;display:block"><title id="town-inside-t">How the town works inside: Simulation engine, then Event log, then Metrics and trace, then Screen</title><style>.km-bg{fill:#fff}.km-box{fill:#f6f8f4;stroke:#8d9a8e;stroke-width:1.2}.km-t{fill:#202723;font:600 13px system-ui,-apple-system,'Segoe UI',sans-serif}.km-s{fill:#5d6b62;font:11.5px system-ui,-apple-system,'Segoe UI',sans-serif}.km-seg{fill:none;stroke:#3e7aa6;stroke-width:1.2;stroke-dasharray:5 4}.km-segt{fill:#3e7aa6;font:600 11px system-ui,-apple-system,'Segoe UI',sans-serif}.km-work{stroke:#202723;stroke-width:1.6;fill:none}.km-rec{stroke:#5d6b62;stroke-width:1.4;stroke-dasharray:2 3;fill:none}.km-sen{fill:#3e7aa6}.km-chk{fill:#c2502e}.km-off{fill:#9aa39c}.km-mk{fill:#fff;font:700 11px system-ui,sans-serif;text-anchor:middle}.km-hot .km-box{stroke:#c2502e;stroke-width:2.4}.km-path{stroke:#c2502e;stroke-width:3.2}.km-ah{fill:#202723}.km-ahp{fill:#c2502e}@media (prefers-color-scheme:dark){.km-bg{fill:#1b211e}.km-box{fill:#242c28;stroke:#7d8a80}.km-t{fill:#eef2ec}.km-s{fill:#b3beb5}.km-work{stroke:#e4e9e2}.km-ah{fill:#e4e9e2}.km-rec{stroke:#b3beb5}.km-seg{stroke:#7fb2d8}.km-segt{fill:#7fb2d8}.km-sen{fill:#5d9ccc}.km-chk{fill:#e0714c}.km-hot .km-box{stroke:#e0714c}.km-path{stroke:#e0714c}.km-ahp{fill:#e0714c}}</style><defs><marker id="town-inside-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path class="km-ah" d="M0 0L8 4L0 8Z"/></marker></defs><rect class="km-bg" width="340" height="358" rx="8"/><rect class="km-box" x="10" y="10" width="320" height="62" rx="6"/><text class="km-t" x="22" y="35">1. Simulation engine</text><text class="km-s" x="22" y="55">a clock ticks once a minute; tasks move between stations</text><path class="km-work" d="M170 72V100" marker-end="url(#town-inside-arrow)"/><rect class="km-box" x="10" y="102" width="320" height="62" rx="6"/><text class="km-t" x="22" y="127">2. Event log</text><text class="km-s" x="22" y="147">every minute of every task: working or waiting, and why</text><path class="km-work" d="M170 164V192" marker-end="url(#town-inside-arrow)"/><rect class="km-box" x="10" y="194" width="320" height="62" rx="6"/><text class="km-t" x="22" y="219">3. Metrics and trace</text><text class="km-s" x="22" y="239">counted from the log, never typed in</text><path class="km-work" d="M170 256V284" marker-end="url(#town-inside-arrow)"/><rect class="km-box" x="10" y="286" width="320" height="62" rx="6"/><text class="km-t" x="22" y="311">4. Screen</text><text class="km-s" x="22" y="331">the town, the panels and the lessons</text></svg></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator I built earlier (I will paste it below). Keep it one HTML file with no libraries. Add:
+
+1. An event log. Each time a task joins a line, starts a step, or leaves a step, add a row: minute, task number, step, and what happened.
+2. A minute-by-minute record for each task: for every minute from arrival to finish, was it working or waiting, and at which step?
+3. A task picker and a timeline bar for the chosen task: one horizontal bar from arrival to finish (or to now), solid where it was working and striped where it was waiting, colored by step.
+
+Show the log in a scrollable table under the bar. Compute every number on screen from the log, not from separate counters.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>Pick any task and see its bar: work and waiting, step by step.</li><li>The log lists every move, in time order.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>1 reviewer: the last task to finish is task 64. It arrived at minute 256, finished at minute 470, worked 16 minutes and waited 198.</li>
+<li>For every task, working minutes plus waiting minutes equal finish minus arrival. Not one minute missing or counted twice.</li>
+<li>A task that is never sent back and never approved works exactly 16 minutes, whatever the staffing.</li></ul>
+</section>
+<nav class="pager"><a href="01-where-work-waits.html">← Lesson 1</a><a href="03-littles-law.html">Next: Little's Law →</a></nav>
+</main><script src="copy.js"></script></body></html>

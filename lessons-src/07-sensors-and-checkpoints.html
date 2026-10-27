@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sensors and Checkpoints</title><meta name="description" content="Lesson 7 of 8: you can only see what passes a sensor and only stop what passes a checkpoint, so put both where work crosses a boundary, with the checkpoint as early on the path as you can.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 7 of 8</span></div>
+<h1>Where do the sensors and checkpoints go?</h1>
+
+<p>A small firm finds out that its AI (artificial intelligence) assistant uploaded a customer file to a website nobody recognizes. The owner asks three questions. Which assistant did it? With whose access? Through which door did the file leave? Nobody can answer, because nothing was watching those places.</p>
+
+<p class="idea">You can only see what passes a sensor, and you can only stop what passes a checkpoint. Put sensors where work crosses a boundary, and put the checkpoint as early on the path as you can.</p>
+
+<p>A <strong>sensor</strong> is anything that records what passes: a log. A <strong>checkpoint</strong> is a place that can decide and stop.</p>
+
+<h2>Picture the file's trip first</h2>
+<p>First the trip, in plain words. The assistant picks up the file, a tool sends it, and the office's internet connection carries it out. Each stop can have a camera (a sensor) or a guard (a checkpoint). The map below names the same stops the way an information technology team would.</p>
+
+<div class="card map">{{svg.enterpriseMap}}</div>
+
+<p class="note">This is the town redrawn as a typical company network. Each box names the enterprise piece and the town piece it stands for. The agents and their tools sit in their own fenced-off part of the network (a segment). The model gateway is the one door for model calls, the identity provider is the sign-in service, and egress is traffic leaving the network. At the bottom, a SIEM (security information and event management system) gathers every record in one place and raises alerts. It watches; it does not stop anything.</p>
+<p class="note">Sensors: {{net7.sensorList}}. Checkpoints: {{net7.checkpointList}}.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>A task carrying a hidden instruction tells the execution agent to {{s8.sendLabel}}. Of the {{net7.sensors}} sensors on the map, which would record it? Of the {{net7.checkpoints}} checkpoints, which could stop it first?</p></div>
+
+<details class="reveal"><summary>Show the path</summary>
+<div class="card map">{{svg.incidentMap}}</div>
+<p>The action goes from the agents to the tools, through the network edge, to the outside address. <strong>{{net7.seen}} of {{net7.sensors}}</strong> sensors sit on that path: {{net7.seenNames}}. The {{net7.missedSensor}} at the model gateway never sees it, because the file does not pass through the gateway. Watching only your AI model calls would miss this completely. And sensors see different things: the connection log shows that something left and where it went; only the tool-call log shows what was sent.</p>
+<p>{{net7.stops}} checkpoints sit on the path: the {{net7.stopNames}}. The {{net7.first}} acts first, before anything leaves. The egress gate is a second line. Zero trust is the habit behind this: do not trust a request because of where it came from. Each checkpoint asks who is asking and what they may do. The map shows where such checks could sit, not that every crossing has one. The identity provider answers the owner's second question, "with whose access?", and its sign-in log is where you would look.</p>
+<p>A different incident takes a different path. An agent pasting a customer file into a model call is seen by {{net7.leakSeen}} sensors ({{net7.leakSeenNames}}), and the {{net7.leakFirst}} is the first place to stop it.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 2</strong>, then <strong>Enterprise view</strong>.</li>
+<li>Under <strong>Quality and security rules</strong>, switch on <strong>Poisoned requests</strong>. Run at <strong>20×</strong> and read the status under the map.</li>
+<li>Under <strong>Break it on purpose</strong>, press <strong>Checkpoint off</strong>. The tool checkpoint turns grey. Keep running: what does the map's status say now?</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A clinic's scheduling assistant reads patient messages, books appointments in the calendar and sends text reminders. Draw its path for one reminder. Where is its door to the outside world, and is there one door or several?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>List every place your AI tools send something outside your business: email, chat, uploads, model calls. For each one, write two words: is it logged, and can anything stop it? One logged door is easier to watch than five unlogged ones.</p></div>
+
+<p class="note">A schematic, vendor-neutral map. In the town, only the tool checkpoint is built; the map shows where the others would sit.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. Give this prompt to any AI chat or coding assistant to draw your own small map. It is a starter for learning, not a security design for a business. Then check its work against the answers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>A sensor sees an event only if the event's path passes it. A checkpoint can stop an event only if it sits on the path, and the earliest one on the path stops it before anything happens.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Build one HTML file with no libraries that draws a simple network map as an SVG picture, readable on a phone (stack the boxes top to bottom).
+
+Boxes: {{net7.promptBoxes}}.
+Mark a sensor (a blue "S") on: {{net7.promptSensors}}.
+Mark a checkpoint (a red "C") on: {{net7.promptCheckpoints}}.
+
+Add two buttons, one for each incident. Each has a path:
+1. "{{net7.incident1}}": {{net7.path1}}.
+2. "{{net7.incident2}}": {{net7.path2}}.
+
+When I press a button, draw that path in red, and list underneath: which sensors record it (the ones on boxes in the path) and which checkpoints could stop it, earliest on the path first.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>One page with the map, readable on a phone.</li><li>Pressing an incident draws its path and lists the sensors and checkpoints on it.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>Sending a file outside: {{net7.seen}} sensors, on {{net7.seenBoxes}}. Checkpoints, earliest first: {{net7.stopBoxes}}.</li>
+<li>Pasting a file into a model call: {{net7.leakSeen}} sensors, on {{net7.leakSeenBoxes}}. Checkpoints, earliest first: {{net7.leakStopBoxes}}.</li>
+<li>The sensor on {{net7.missedBox}} must not appear for the first incident. If it does, the AI is listing every sensor instead of the ones on the path.</li></ul>
+</section>
+<nav class="pager"><a href="06-who-decided.html">← Lesson 6</a><a href="08-input-is-the-attack.html">Next: when the input is the attack →</a></nav>
+</main><script src="copy.js"></script></body></html>

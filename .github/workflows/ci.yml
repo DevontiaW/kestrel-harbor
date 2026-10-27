@@ -1,0 +1,21 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      # The audit runs before npm ci: it refuses any node_modules folder rather than skipping it.
+      - name: Release audit of the whole repository (no secrets, local paths, emails or hidden image text)
+        run: node scripts/audit-release.mjs .
+      - run: npm ci
+      - name: Tests (engine, observability, lessons drift, release audit)
+        run: npm test

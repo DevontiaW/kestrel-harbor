@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trace Versus Dashboard</title><meta name="description" content="Lesson 2 of 8: an average of finished work hides the waiting; one task's timeline shows where its time went.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 2 of 8</span></div>
+<h1>What does a trace show that a dashboard hides?</h1>
+
+<p>Your weekly report says jobs take "about two hours on average." Then a customer calls, upset, because their job took most of the day. Both are true. The average blends many jobs into one number, and it only counts the ones that finished.</p>
+
+<p class="idea">An average tells you how long finished work took. A trace of one task tells you where its time went: how much was work and how much was waiting, and where.</p>
+
+<p>A <strong>trace</strong> is a timeline for one piece of work. Each time the task moves, the system writes a line in a log: when it arrived, when each step started and ended, who reviewed it, and what stopped it.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With one reviewer, task {{last.id}} arrived at {{last.arrived}} and finished at {{last.finished}}, {{last.life}} minutes later. How many of those minutes do you think someone or something was actually working on it?</p></div>
+
+<details class="reveal"><summary>Show the trace</summary>
+<p>Only <strong>{{last.work}} minutes</strong> were work. The other <strong>{{last.wait}} minutes</strong> were waiting, {{last.reviewPhrase}} in line for review.</p>
+<div class="card" role="img" aria-label="Task {{last.id}}: {{last.work}} minutes working, {{last.wait}} minutes waiting"><h3>Task {{last.id}}, {{last.life}} minutes</h3>
+<div class="trace"><div class="work" style="flex:{{last.workBefore}}"></div><div class="wait" style="flex:{{last.wait}}"></div><div class="work" style="flex:{{last.workAfter}}"></div></div>
+<p class="note">Solid: agents working ({{last.workBefore}} min), then review ({{last.workAfter}} min). Striped: waiting ({{last.wait}} min).</p></div>
+<p>Count the whole shift in task-minutes: ten tasks waiting one minute is ten task-minutes. {{one.waitShare}} of all the task-minutes on the floor were spent waiting. The dashboard number, an average of {{one.cycle}} minutes for finished tasks, cannot tell you that. It also says nothing about the {{one.left}} tasks still in the system, whose waits are not over yet.</p>
+<p>Two averages appear in these lessons. <em>Average time to finish</em> counts only tasks that are done. <em>Average time in the system</em> counts every task that has arrived, done or not.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 1</strong>, and let it run to about 12:00.</li>
+<li>In <strong>Follow one task</strong>, pick a task. Read the bar: solid is work, striped is waiting. Look for the <strong>Human approval</strong> and <strong>Sent back</strong> marks.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>An accounting firm reports that tax returns take "three days on average" from upload to filing. What single question would a trace of one late return answer that the average cannot?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>Pick one late item from last week. Write down when it arrived, when each step started and ended, and who touched it. Add up the minutes nobody was working on it. That is your first trace.</p></div>
+
+<p class="note">Numbers come from the same illustrative model as the town, with fixed task times.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. This prompt adds a log and a one-task timeline to the simulator from lesson 1. It is a starter for learning, not a monitoring tool. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Time in the system = time working + time waiting. An average shows the total; a trace shows the split, and where the waiting happened.</p></div>
+<p>The town itself is built in the same four layers your page will have:</p>
+<div class="card map">{{svg.townInside}}</div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator I built earlier (I will paste it below). Keep it one HTML file with no libraries. Add:
+
+1. An event log. Each time a task joins a line, starts a step, or leaves a step, add a row: minute, task number, step, and what happened.
+2. A minute-by-minute record for each task: for every minute from arrival to finish, was it working or waiting, and at which step?
+3. A task picker and a timeline bar for the chosen task: one horizontal bar from arrival to finish (or to now), solid where it was working and striped where it was waiting, colored by step.
+
+Show the log in a scrollable table under the bar. Compute every number on screen from the log, not from separate counters.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>Pick any task and see its bar: work and waiting, step by step.</li><li>The log lists every move, in time order.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>1 reviewer: the last task to finish is task {{build.l2.task}}. It arrived at minute {{build.l2.arrivedMinute}}, finished at minute {{build.l2.finishedMinute}}, worked {{build.l2.work}} minutes and waited {{build.l2.wait}}.</li>
+<li>For every task, working minutes plus waiting minutes equal finish minus arrival. Not one minute missing or counted twice.</li>
+<li>A task that is never sent back and never approved works exactly {{workMinutes}} minutes, whatever the staffing.</li></ul>
+</section>
+<nav class="pager"><a href="01-where-work-waits.html">← Lesson 1</a><a href="03-littles-law.html">Next: Little's Law →</a></nav>
+</main><script src="copy.js"></script></body></html>

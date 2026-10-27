@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Failure Modes</title><meta name="description" content="Lesson 4 of 8: an outage stops only the steps that depend on it; the rest keep working until their line runs dry, and the cost shows up later as waiting.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 4 of 8</span></div>
+<h1>What stops, and what keeps moving, when something fails?</h1>
+
+<p>The office internet drops for half an hour. People keep working on what is already on their desks. Nobody can send anything new out. When the connection returns, there is a burst of catching up, and the afternoon runs late.</p>
+
+<p class="idea">A failure stops only the steps that depend on what failed. Everything else keeps working until the work in front of it runs out, and when the floor has spare capacity, the cost shows up as waiting rather than lost output.</p>
+
+<p>On the agent floor, the research and planning agents call a model API (application programming interface): the remote service that answers their questions. Execution uses local tools. People do the review. Each depends on something different.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With two reviewers, the model API goes down from 10:00 to 10:30. By 16:00, how many fewer tasks are finished than on a normal day?</p></div>
+
+<details class="reveal"><summary>Show what the model does</summary>
+<p>The number finished changes by <strong>0</strong>: with two reviewers the floor has spare capacity, so it catches up by the end of the shift. The cost is time. During the outage, tasks sat stopped for 158 task-minutes in all (a task-minute is one task stopped for one minute). That is only 14% of the extra time. The other 974 task-minutes were extra waiting in line, as the backlog worked its way through the floor. In all, the average task's time in the system rose from 19.5 to 29.0 minutes.</p>
+<div class="card"><h3>Same 30-minute failure, 2 reviewers</h3>
+<table><thead><tr><th>Failure</th><th>Stops</th><th>Finished by 16:00</th><th>Time cost</th></tr></thead><tbody>
+<tr><th scope="row">Model API outage</th><td>Research, planning</td><td>115 (normal day 115)</td><td>Average time in the system 19.5 to 29.0 min</td></tr>
+<tr><th scope="row">Reviewers away</th><td>Review</td><td>115 (normal day 115)</td><td>Average wait at review 0.3 to 8.7 min</td></tr>
+</tbody></table></div>
+<p>When reviewers step away from 10:00 to 10:30, finished tasks still reach 115, but the average wait at review rises from 0.3 to 8.7 minutes.</p>
+<p>The town is generous in one way: a paused task resumes where it left off. Real outages can lose requests that were halfway done, which means repeated work on top of the delay.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 2</strong>, and run to about 09:30.</li>
+<li>Under <strong>Break it on purpose</strong>, predict which stages stop, then press <strong>Model API outage</strong>. Read the stalled and still-moving lists.</li>
+<li>Run 30 minutes, press <strong>Restore all</strong>, and follow a task that was in research. Its dark stripes are the outage.</li>
+<li>In <strong>Experiment Lab</strong>, run <strong>Cut the model API for 30 minutes</strong> and compare the two columns.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A law office uses an AI (artificial intelligence) service to draft letters, and a paralegal checks each one. The paralegal is out sick for a day while the AI keeps drafting. What does the paralegal find on their desk the next morning?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>List the outside services your AI workflow depends on, and the people it depends on. For each, write one line: if this stops for an hour, what keeps moving, and where does the work pile up?</p></div>
+
+<p class="note">Illustrative fixed times.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. This prompt adds a break-it switch to your simulator. It is a starter for learning, not a test plan for a business. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>A failure stops only the steps that depend on what failed. The time it costs is the minutes down times the tasks held there. Spare capacity afterwards decides whether that time also becomes lost output.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator with an event log that I built earlier (I will paste it below). Keep it one HTML file with no libraries. Add a break-it switch called "remote model service down":
+
+- When it is on, it covers minutes 121 to 150 of the run.
+- During those minutes, research and plan stop: tasks being worked there pause where they are, and tasks waiting in their lines cannot start. Execute and review keep going.
+- Count every minute a task spends at research or plan during the outage, working or waiting, as "stopped by outage", separately from ordinary waiting.
+- Draw those minutes in the timeline bar as dark stripes.
+- Show totals: task-minutes stopped by the outage, tasks finished, and the average time in the system (all task-minutes divided by tasks that arrived).</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>A switch, and a run with it on and off.</li><li>Tasks caught in the outage show dark stripes on their bars.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>2 reviewers, outage on: 158 task-minutes stopped by the outage.</li>
+<li>Tasks finished change by 0, and the average time in the system goes from 19.5 to 29.0 minutes.</li>
+<li>Execute and review keep working during the outage. If they stop too, the AI has cut power, not the model service.</li></ul>
+</section>
+<nav class="pager"><a href="03-littles-law.html">← Lesson 3</a><a href="05-human-decision.html">Next: the human decision →</a></nav>
+</main><script src="copy.js"></script></body></html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Who Decided, and Can You Prove It?</title><meta name="description" content="Lesson 6 of 8: every check misses some mistakes; what reaches the customer is what each check in a row lets through, and the log is how you prove which check saw what.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 6 of 8</span></div>
+<h1>Who decided, and can you prove it?</h1>
+
+<p>An accounting office lets an AI (artificial intelligence) tool draft client letters, and a reviewer reads each one. A letter with a wrong figure still goes out. The client calls. The partner asks two questions: who checked this letter, and how many others like it got through?</p>
+
+<p class="idea">Every check misses some mistakes. What reaches the customer is the mistakes made, times the share each check in a row lets through, as long as the checks miss different things. If they miss the same things, more gets through. A later check catches only what it actually sees.</p>
+
+<p>Lesson 5 left an honest gap: approval costs time, and the town did not count what it catches. Now it does. With defects switched on, every 4th task carries a mistake. Review catches 3 of every 4 of the mistakes it sees. The shift lead still approves every 3rd task, and also misses: every 2nd mistake the shift lead sees gets through. Neither check is perfect, which is the point.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With two reviewers and defects on, 5 mistakes reach customers in a shift. Take away the approval step. Guess how many mistakes reach customers then, and how many more tasks the shift finishes.</p></div>
+
+<details class="reveal"><summary>Show what the model does</summary>
+<p>Without approval, <strong>6</strong> mistakes reach customers, 1 more than today, and the shift finishes 1 more in total. That is the trade: a few tasks of output for a few mistakes kept away from customers.</p>
+<div class="card"><h3>Approval policy, defects on, 2 reviewers, full shift</h3>
+<table><thead><tr><th>Policy</th><th>Finished</th><th>Caught at approval</th><th>Missed at approval (counted in Escaped)</th><th>Escaped</th></tr></thead><tbody>
+<tr><th scope="row">No approval step</th><td class="n">113</td><td class="n">0</td><td class="n">0</td><td class="n">6</td></tr>
+<tr><th scope="row">Every 3rd task (today)</th><td class="n">112</td><td class="n">1</td><td class="n">1</td><td class="n">5</td></tr>
+<tr><th scope="row">Every task</th><td class="n">89</td><td class="n">2</td><td class="n">2</td><td class="n">2</td></tr>
+</tbody></table></div>
+<p>Where the 30 mistakes went today: review caught 22, the shift lead caught 1, 5 reached customers (1 of them seen by the shift lead and missed), and 2 were still on the floor at the end. 22 + 1 + 5 + 2 = 30. Approving every task cuts escapes to 2, not zero, because the shift lead still misses some, and output falls to 89. Checking every third task only catches the misses that happen to land on those tasks, and then only some of those.</p>
+<p>You can say this only because every check wrote a line in the log: which reviewer saw the task, what they found, and who approved it. That record is the answer to "who decided?"</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 2</strong>.</li>
+<li>Under <strong>Quality and security rules</strong>, switch on <strong>Defects</strong>. Run at <strong>20×</strong> to the end of the shift and read caught at review, caught at approval and escaped.</li>
+<li>In <strong>Follow one task</strong>, find a task marked <strong>Defect escaped</strong>. Who reviewed it?</li>
+<li>In <strong>Experiment Lab</strong>, predict, then run <strong>Remove the human approval step</strong>. Read the escaped row.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A payroll team's software gets about 1 paycheck in 50 wrong. A clerk checks every paycheck and misses about 1 wrong one in 10. They run 2,000 paychecks a month. About how many wrong paychecks reach employees, and what would a second check on only the largest paychecks change?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>For one AI workflow, count last month's mistakes in two piles: the ones your checks caught, and the ones customers found. Caught divided by the total is your check's real catch rate. Then ask: does your log say who checked each one?</p></div>
+
+<p class="note">Illustrative fixed rules, not measurements. The payroll example uses made-up round numbers for practice.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. Give this prompt to any AI chat or coding assistant to add this lesson's idea to the small simulator you started in lesson 1. It is a starter for learning, not a tool for running a business. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Mistakes that reach the customer = mistakes made × share the first check misses × share that the later check does not stop.</p><p>Here: 30 mistakes × 1 in 4 missed × the share the later check lets through (2 in 3 never approved, plus 1 in 2 of the approved ones missed) = about 6. The town counts 5. A rule of thumb gets you close, not exact. It also assumes the checks miss different things; checks that miss the same kinds of mistakes catch less together than the multiplication says.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator I built earlier (I will paste it below). Keep it one HTML file with no libraries. Add defects and a review that can miss them:
+
+- Every 4th task (task 4, 8, 12...) arrives carrying a defect.
+- Keep a running count of reviews that look at a task carrying a defect. Every 4th such review misses it; the others catch it.
+- A caught defect sends the task back to execute to be fixed, then to review again. That trip counts as the task's one return, so the every-5th-task rule (from lesson 1) does not send it back again.
+- A task the every-5th-task rule sends back is reviewed again, and that review counts too.
+- Keep a second running count of approvals that look at a task carrying a defect. Every 2nd such approval misses it and approves the task anyway; the others catch it and send the task back to execute to be fixed.
+- A task that finishes still carrying a defect has escaped to the customer.
+
+Show four counts: caught at review, caught at approval, missed at approval, escaped. Mark each one on the task's timeline bar, and add a switch to remove the approval step.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>The same page as before, with a defects switch and four new counts.</li><li>Timeline bars show where a defect was caught, or that it escaped.</li><li>Turning approval off changes the escaped count.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>Two reviewers, approval on every 3rd task: 30 defects; 22 caught at review, 1 at approval, 5 escaped, 112 finished.</li>
+<li>Approval removed: 6 escaped and 113 finished.</li>
+<li>Approval on every task: 2 caught at approval, 2 missed, 2 escaped, 89 finished.</li>
+<li>Defects switched off: back to 115 finished, the lesson 1 number.</li></ul>
+</section>
+<nav class="pager"><a href="05-human-decision.html">← Lesson 5</a><a href="07-sensors-and-checkpoints.html">Next: sensors and checkpoints →</a></nav>
+</main><script src="copy.js"></script></body></html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>When the Input Is the Attack</title><meta name="description" content="Lesson 8 of 8: instructions hidden in what an agent reads can steer what it does; a check before the tool action can stop it, a check after can only report it, and least privilege limits what it can reach.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 8 of 8</span></div>
+<h1>What happens when the input is the attack?</h1>
+
+<p>An office lets an AI (artificial intelligence) assistant read supplier emails and file the invoices. One email carries a line meant for the assistant, not for people: send the customer list to this address. The assistant can send email, so it does. The bookkeeper reviews the filed invoice the next morning. It looks fine. The list is already gone.</p>
+
+<p class="idea">Instructions hidden in what an agent reads can steer what it does. A check before the tool action can stop it; a check after the action can only report it.</p>
+
+<p>This is called prompt injection: the attack arrives as content, not as a break-in. With poisoned requests switched on, every 10th task in the town arrives carrying one. In an 8-hour shift 12 arrive, but the last one comes too late to reach a tool, so 11 can act. Half ask the execution agent to export every customer record, a tool its job does not need. Half ask it to send the file to an outside address, misusing a tool it does need. Two controls defend the floor:</p>
+<ul><li><strong>The checkpoint</strong> checks each tool action before it runs. A blocked task goes to quarantine, where a person spends 10 minutes clearing it. It is not perfect: every 3rd poisoned action looks allowed to it and gets through.</li>
+<li><strong>Least privilege</strong> gives each agent only the tools its role needs. The execution agent holds two tools: edit the draft and send email.</li></ul>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With two reviewers, 11 poisoned requests can act in a shift. With the checkpoint off but least privilege on, how many unsafe actions get carried out? Does review stop any of them?</p></div>
+
+<details class="reveal"><summary>Show what the model does</summary>
+<p><strong>5</strong> unsafe actions get carried out. Least privilege refuses the 6 that ask for a tool the agent does not hold, and lets every misuse of a tool it does hold go through. Least privilege limits which tools an agent holds, not how it uses them; narrow the send tool to the customer on file and it would refuse those too. Review stops none: it checks the work, after the tool has already acted.</p>
+<div class="card"><h3>Poisoned requests, 2 reviewers, full shift</h3>
+<table><thead><tr><th>Controls</th><th>Unsafe actions</th><th>Refused</th><th>Sent to a person</th><th>Slipped past</th><th>Finished</th></tr></thead><tbody>
+<tr><th scope="row">Neither</th><td class="n">11</td><td class="n">0</td><td class="n">0</td><td class="n">0</td><td class="n">115</td></tr>
+<tr><th scope="row">Least privilege only</th><td class="n">5</td><td class="n">6</td><td class="n">0</td><td class="n">0</td><td class="n">115</td></tr>
+<tr><th scope="row">Checkpoint and least privilege</th><td class="n">1</td><td class="n">2</td><td class="n">8</td><td class="n">3</td><td class="n">114</td></tr>
+</tbody></table></div>
+<p>With both controls on, the checkpoint sends 8 of the 11 to a person. It lets 3 through because they look allowed. Least privilege refuses 2 of those 3, and 1 is carried out. That is why you keep both: the checkpoint cut unsafe actions from 5 to 1, and least privilege caught most of what the checkpoint missed. A real check also misses actions that look allowed, the way review missed defects in lesson 6.</p>
+<p>The price is time: the average task's time in the system rises from 19.5 to 21.2 minutes, and 114 finish instead of 115. Least privilege alone cuts unsafe actions from 11 to 5 at no cost in time; only a check before the action stops more.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 2</strong>, and switch on <strong>Poisoned requests</strong>.</li>
+<li>Run at <strong>20×</strong>. Watch <strong>Quarantined for a person</strong> under Metrics, and follow a task marked <strong>Blocked at checkpoint</strong>.</li>
+<li>Under <strong>Break it on purpose</strong>, press <strong>Checkpoint off</strong>. Watch <strong>Unsafe tool actions</strong> start to climb.</li>
+<li>In <strong>Experiment Lab</strong>, run <strong>Give agents every tool (no least privilege)</strong> and compare the unsafe row.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A property office lets an AI assistant read viewing requests from its website and book them in the agents' calendars. The assistant also has access to the shared drive with every tenant's lease. What would least privilege take away, and where would you put the checkpoint?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>For each AI assistant you use, list the tools and data it can reach. Cross out any its job does not need. For what is left, ask one question: is anything checked before it acts, or only after?</p></div>
+
+<p class="note">Illustrative fixed rules. The poisoned requests are a teaching device: no real attack text is used or shown.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. Give this prompt to any AI chat or coding assistant to add a checkpoint to your small simulator. It is a starter for learning the idea, not a security control for a business. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Unsafe actions = poisoned requests that reach a tool − those refused because the tool is not in the role − those stopped by a check before the action (a check that misses some stops fewer). A check after the action stops nothing.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator I built earlier (I will paste it below), with defects switched off and approval on every 3rd task. Keep it one HTML file with no libraries. Add poisoned requests and two controls:
+
+- Every 10th task arrives "poisoned": it carries a hidden instruction. Poisoned tasks 1, 3, 5... (task 10, 30...) ask the execute step to export every customer record. Poisoned tasks 2, 4, 6... (task 20, 40...) ask it to send the file to an outside address.
+- Give each step a list of allowed tools. Execute may only: edit the draft and send email. Sending to an outside address uses the send email tool, so the list allows it.
+- Add two switches: "checkpoint" and "least privilege", both on at the start.
+- When execute finishes a poisoned task (the checkpoint runs first, then the tool list):
+  - Checkpoint on: keep a running count of poisoned actions that reach the checkpoint. Every 3rd one (the 3rd, 6th, 9th) looks allowed and gets through: treat it as if the checkpoint were off, with least privilege still on, and mark it as slipped. Block every other one: log it and send the task to a quarantine step (one person, 10 minutes, first come first served). After quarantine the task is clean and goes back to execute.
+  - Checkpoint off and least privilege on: if the tool is not on execute's list, refuse it and log it; otherwise carry it out.
+  - Both off: carry it out.
+  Without the checkpoint, the hidden instruction is acted on (or refused) only once; after that the task is clean, even if it passes execute again for its every-5th-task return.
+  A carried-out action is an unsafe action. Count it and log it.
+
+Show counts for unsafe actions, refused, slipped past the checkpoint, and sent to quarantine, and mark them on each task's timeline bar.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>Two new switches and four new counts.</li><li>With the checkpoint on, most poisoned tasks visit quarantine and still finish; a few slip past.</li><li>With it off, the unsafe count climbs during the shift.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>Two reviewers, both controls on: 8 sent to quarantine, 1 unsafe, 114 finished. Of the 3 that slipped past the checkpoint, 2 were refused.</li>
+<li>Checkpoint off, least privilege on: 5 unsafe and 6 refused.</li>
+<li>Both off: 11 unsafe, and 115 finished, the same as with no poisoned requests at all. Nothing on an output dashboard warns you.</li></ul>
+</section>
+<nav class="pager"><a href="07-sensors-and-checkpoints.html">← Lesson 7</a><a href="index.html">All lessons</a></nav>
+</main><script src="copy.js"></script></body></html>

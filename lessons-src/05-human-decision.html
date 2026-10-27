@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Designing the Human Decision</title><meta name="description" content="Lesson 5 of 8: a human approval step is a station with limited time; how often it fires decides whether it is a safety check or the new bottleneck.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 5 of 8</span></div>
+<h1>Where should a person decide?</h1>
+
+<p>A shop owner asks to sign off every refund the AI (artificial intelligence) assistant approves. It feels safe. Within a week, refunds wait two days for the owner, customers complain, and the owner is doing nothing but signing.</p>
+
+<p class="idea">A human approval step is a station with limited time, like any other. How often it fires decides whether it is a safety check or the new bottleneck.</p>
+
+<p>On the agent floor, a shift lead approves every {{approveNth}} task, and each approval takes {{approveMinutes}} minutes. Two reviewers keep review moving, so approval is the only human decision left to study.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>If the shift lead approves every task instead of every third, what happens to the number finished in a shift, now {{two.finished}}?</p></div>
+
+<details class="reveal"><summary>Show what the model does</summary>
+<p>Output falls to <strong>{{approveAll.finished}}</strong>, and {{approveAll.left}} tasks are still in the system at the end. Approving every task asks for {{approveAll.load}} minutes of approving per hour from one person who has 60. The shift lead is busy {{approveAll.approverBusy}} of the shift. In all, tasks wait about {{approveAll.waitHours}} hours for a signature.</p>
+<div class="card"><h3>Approval policy, 2 reviewers, full shift</h3>
+<table><thead><tr><th>Policy</th><th>Finished</th><th>Avg minutes in system</th></tr></thead><tbody>
+<tr><th scope="row">No approval step</th><td class="n">{{noApproval.finishedNo}}</td><td class="n">{{noApproval.systemNo}}</td></tr>
+<tr><th scope="row">Every {{approveNth}} task (today)</th><td class="n">{{two.finished}}</td><td class="n">{{noApproval.systemBase}}</td></tr>
+<tr><th scope="row">Every task</th><td class="n">{{approveAll.finished}}</td><td class="n">{{approveAll.inSystem}}</td></tr>
+</tbody></table></div>
+<p>Removing the step entirely changes output by {{noApproval.finishedDelta}} and saves little time. That does not make it worthless. So far the model counts what approval costs, not the mistakes it catches, so the real question is which tasks carry enough risk to deserve a person's minutes. Lesson 6 adds the mistakes.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a> and press <strong>Reviewers 2</strong>.</li>
+<li>In <strong>Experiment Lab</strong>, predict, then run <strong>Approve every task</strong>. Read the top waits for each column.</li>
+<li>Run <strong>Remove the human approval step</strong>. Ask what the model cannot show you: the mistakes that step would have caught.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A hiring team lets an AI tool screen applications and wants a manager to approve each rejection. About 200 applications arrive a week, and each approval takes the manager 5 minutes. How many hours a week is that, and which rejections would you have the manager check instead?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>For each human sign-off in your AI workflows, write how many items it sees a week and how many minutes each takes. If the total is more than the person's spare hours, decide which items really need a person and route the rest past them.</p></div>
+
+<p class="note">Illustrative fixed times. The hiring example uses made-up round numbers for practice.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. This prompt adds an approval rule you can change. It is a starter for learning, not a workflow design for a business. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Approval minutes needed per hour = items per hour that need approval × minutes each. If that is more than the person's spare minutes, approval becomes the bottleneck.</p><p>Here: approving every task needs {{approveAll.load}} minutes an hour from one person who has 60.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator I built earlier (I will paste it below), with the outage switch off. Keep it one HTML file with no libraries. Replace the fixed approval rule with a setting that has three choices:
+
+- no approval;
+- every {{approveNth}} task, as now;
+- every task.
+
+Approval still comes after review passes, takes {{approveMinutes}} minutes, and one person does it, first come first served. Next to the setting, show the approval minutes needed per hour (tasks per hour that need approval × {{approveMinutes}}) beside the 60 minutes the person has, and show the total minutes tasks spent waiting for approval.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>A three-way approval setting, and the needed-versus-available minutes beside it.</li><li>Running each setting gives a different finished count.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>2 reviewers: no approval, {{build.l5.none}} finished; every {{approveNth}} task, {{two.finished}}; every task, {{build.l5.all}}.</li>
+<li>Approving every task needs {{approveAll.load}} minutes an hour, more than the 60 one person has.</li></ul>
+</section>
+<nav class="pager"><a href="04-failure-modes.html">← Lesson 4</a><a href="06-who-decided.html">Next: who decided? →</a></nav>
+</main><script src="copy.js"></script></body></html>

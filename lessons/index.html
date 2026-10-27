@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Observability Practicum</title><meta name="description" content="Eight short lessons on seeing where AI agent work waits, fails and needs a person, and on governing and securing it, using the Kestrel Harbor model town.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="../index.html">Open the town</a><span>Practicum</span></div>
+<h1>See where agent work waits</h1>
+<p>Eight short lessons for owners and operators who use AI (artificial intelligence) agents and want to know where the work gets stuck, what breaks, where a person has to decide, and how to keep it safe. Each one takes about ten minutes on a phone, asks you to predict before it reveals, and ends with something to check in your own work on Monday.</p>
+<p>The lessons use Kestrel Harbor, a small model town with an agent floor: agents research, plan and carry out tasks, people review them, and a shift lead approves some. Every number in a lesson is computed from the same model you can run. Each lesson also ends with an optional "Build it yourself with AI" section: a prompt you can give any AI assistant to build a tiny version, and the numbers to check it against.</p>
+
+<p class="arc">Simulate</p>
+<ol class="steps" start="0" style="list-style:none;padding-left:0">
+<li><a href="../index.html">The town</a>: one clock, trucks, a bike plant, a clinic desk and an agent floor.</li>
+</ol>
+<p class="arc">Observe</p>
+<ol class="steps">
+<li><a href="01-where-work-waits.html">Where does agent work wait?</a> The review constraint.</li>
+<li><a href="02-trace-vs-dashboard.html">What does a trace show that a dashboard hides?</a> One task's timeline.</li>
+<li><a href="03-littles-law.html">Why does adding tasks not add output?</a> Little's Law on an agent floor.</li>
+<li><a href="04-failure-modes.html">What stops, and what keeps moving, when something fails?</a> Outages, rework, missing people.</li>
+</ol>
+<p class="arc">Govern and secure</p>
+<ol class="steps" start="5">
+<li><a href="05-human-decision.html">Where should a person decide?</a> Approval placement and its cost.</li>
+<li><a href="06-who-decided.html">Who decided, and can you prove it?</a> What review and approval catch, and what escapes.</li>
+<li><a href="07-sensors-and-checkpoints.html">Where do the sensors and checkpoints go?</a> The town as a company network.</li>
+<li><a href="08-input-is-the-attack.html">What happens when the input is the attack?</a> Hidden instructions, a checkpoint and least privilege.</li>
+</ol>
+<p class="note">The model uses fixed, illustrative times and rules so every run is the same. Real work varies more, and variation makes waiting worse than shown here. With one reviewer, 64 of 120 tasks finish in a shift; that is a teaching number, not a benchmark.</p>
+</main></body></html>

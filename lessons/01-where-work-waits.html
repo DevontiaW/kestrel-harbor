@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Where Agent Work Waits</title><meta name="description" content="Lesson 1 of 8: work piles up in front of the slowest step every task must pass through.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 1 of 8</span></div>
+<h1>Where does agent work wait?</h1>
+
+<p>Picture a small office that just switched on three AI (artificial intelligence) agents to draft customer quotes. The agents are quick. Every quote still goes to one person, the office manager, who checks it before it leaves the building. By Friday the agents are often idle, the manager is buried, and customers are asking where their quotes are.</p>
+<p>Nothing is broken; the work is waiting in one place.</p>
+
+<p class="idea">Work piles up in front of the step that has more work arriving than time to do it. Every task has to pass through it, so speeding up any other step changes nothing.</p>
+
+<h2>The floor in Kestrel Harbor</h2>
+<p>On the town's agent floor, a new task arrives every 4 minutes, which is 15 an hour. Agents research, plan and carry it out (10 minutes of work in all, spread over several agents working at once). Then a person reviews it for 6 minutes. One task in 5 fails review once and comes back, so the reviewer sees about 18 reviews an hour. A shift lead also approves every 3rd task, which lesson 5 returns to.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With one reviewer, how many of the 120 tasks that arrive in an 8-hour shift get finished? And would a third reviewer help as much as a second?</p></div>
+
+<details class="reveal"><summary>Show what the model does</summary>
+<p>With one reviewer, <strong>64</strong> tasks finish. At the end of the shift, 52 tasks are still waiting for review. The reviewer is busy 97% of the shift, while the research agent is busy 74% and the execution agents 54%.</p>
+<p>A second reviewer lifts output to <strong>115</strong>. A third finishes <strong>115</strong>, the same as two. Once review keeps up, more reviewers only sit idle (busy 58%).</p>
+<div class="card" role="img" aria-label="Review minutes needed per hour compared with reviewer minutes available"><h3>Review minutes per hour</h3>
+<div class="bars">
+<div class="row"><span>Needed</span><div class="track"><div class="fill" style="width:calc(108 / 120 * 100%);--c:var(--amber)">108</div></div></div>
+<div class="row"><span>One reviewer has</span><div class="track"><div class="fill" style="width:calc(60 / 120 * 100%)">60</div></div></div>
+<div class="row"><span>Two reviewers have</span><div class="track"><div class="fill" style="width:100%">120</div></div></div>
+</div></div>
+<p>One person has 60 minutes an hour. The floor asks for 108. The difference has nowhere to go but the line. With one reviewer the average finished task took 117 minutes, and that number never settles: it grows every hour the shift runs.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>. In the Agent floor panel, press <strong>Restart</strong>, then <strong>Reviewers 1</strong>.</li>
+<li>Set speed to <strong>20×</strong> and watch the amber blocks pile up outside the agent floor.</li>
+<li>Scroll to <strong>Metrics</strong>. Find the stage with the longest <strong>Avg wait</strong>. Now press <strong>Reviewers 2</strong> and watch which column changes.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A clinic uses an AI tool to draft visit summaries, and one nurse signs every one. Each day the tool drafts 40 and the nurse can sign 25, so a stack builds up on the nurse's desk. Next month the tool gets twice as fast. How many summaries reach patients each day, and where does the stack grow?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>Pick one workflow where AI drafts and a person approves. Count two numbers for one day: how many drafts arrive, and how many the person clears. If arrivals are higher, you have found where your work waits.</p></div>
+
+<p class="note">All times are illustrative and fixed so the lesson is repeatable. Real work varies, and variation makes lines longer than these. The clinic figures are made-up round numbers for practice.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. Give this prompt to any AI chat or coding assistant to build a tiny, single-file version of the agent floor. Each later lesson adds one piece to it. It is a starter for learning the idea, not a tool for running a business. Then check its work against the numbers below: an AI can write code that looks right and counts wrong.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Work needed per hour versus work available per hour. If a step needs more minutes each hour than its people have, the line in front of it grows every hour.</p><p>Here: review needs 108 minutes an hour. One reviewer has 60.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Build one HTML file with no libraries that simulates a small work queue, one minute at a time, for 480 minutes. Use plain words on screen.
+
+Steps, in order. Each step serves its line in order of when the tasks first arrived in the shift: a task sent back keeps its original place.
+- research: 3 minutes, 1 worker
+- plan: 3 minutes, 1 worker
+- execute: 4 minutes, 2 workers
+- review: 6 minutes, 1, 2 or 3 reviewers (a selector on the page)
+- approval: 5 minutes, 1 worker, only for every 3rd task (task 3, 6, 9...), after review passes
+
+Every 5th task (task 5, 10, 15...) fails its first review and goes back to the execute line, then to review again.
+
+Each minute, in this order:
+1. Every task being worked gets one minute of work. A task that completes its step joins the line for its next step (or finishes).
+2. If the minute is a multiple of 4 (minute 4, 8, 12...), a new task arrives and joins the research line.
+3. Free workers at each step pick up the waiting task that arrived in the shift earliest (not the one that joined the line first).
+
+Show: tasks finished, tasks still in the system, how many wait at each step, and the share of the time each step's workers were busy. Add a button that runs the whole shift.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>One file that opens in any browser, with no internet.</li><li>A reviewer selector, a Run button, and the counts after the run.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>1 reviewer: 64 finished and 56 still in the system; review busy about 97%.</li>
+<li>2 reviewers: 115 finished. 3 reviewers: 115, the same as two.</li>
+<li>Off by one or two? Ask the AI to follow the order of each minute exactly as written. Far off? A rule is wrong; ask it to explain each rule back to you.</li></ul>
+</section>
+<nav class="pager"><a href="index.html">All lessons</a><a href="02-trace-vs-dashboard.html">Next: what a trace shows →</a></nav>
+</main><script src="copy.js"></script></body></html>

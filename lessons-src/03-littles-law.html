@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Little's Law, Agent Floor</title><meta name="description" content="Lesson 3 of 8: tasks in the system equal finish rate times time each one takes, so pushing in more work grows the pile, not the output.">
+<link rel="stylesheet" href="lesson.css"></head><body><main>
+<div class="crumbs"><a href="index.html">Practicum</a><span>Lesson 3 of 8</span></div>
+<h1>How many tasks are on the floor right now?</h1>
+
+<p>Send twice as many people to a busy coffee shop. The counter still serves the same number each hour. The room just gets fuller and everyone waits longer. Say it serves 30 customers an hour and each stays about 20 minutes: walk in at any moment and you will find about 10 people inside, half a customer a minute times 20 minutes.</p>
+
+<p class="idea">On a steady floor (work leaves about as fast as it arrives), the number of tasks in the system equals how fast tasks finish times how long each one takes. When the two sides stop matching, the pile is growing.</p>
+
+<p>This relationship is called Little's Law. On a steady floor it needs only two numbers you can measure on finished work.</p>
+
+<div class="predict"><p>Predict before you open the answer.</p>
+<p>With one reviewer, the floor finishes {{one.perHour}} tasks an hour, and each finished task took {{one.cycle}} minutes. The law turns those two numbers into a guess at how many tasks are on the floor at a typical moment. The model counted {{one.avgWip}}. Do you expect the guess to land close? Why or why not?</p></div>
+
+<details class="reveal"><summary>Show what the model does</summary>
+<div class="card"><h3>Little's Law check, full shift</h3>
+<table><thead><tr><th></th><th>2 reviewers</th><th>1 reviewer</th></tr></thead><tbody>
+<tr><th scope="row">Finished per minute</th><td class="n">{{two.finRate}}</td><td class="n">{{one.finRate}}</td></tr>
+<tr><th scope="row">× minutes each (finished tasks)</th><td class="n">{{two.cycle}}</td><td class="n">{{one.cycle}}</td></tr>
+<tr><th scope="row">= predicted tasks in system</th><td class="n">{{two.finPred}}</td><td class="n">{{one.finPred}}</td></tr>
+<tr><th scope="row">Counted tasks in system</th><td class="n">{{two.avgWip}}</td><td class="n">{{one.avgWip}}</td></tr>
+<tr><th scope="row">Result</th><td>{{l3.twoVerdict}} (off {{two.gap}})</td><td>{{l3.oneVerdict}} (off {{one.gap}})</td></tr>
+</tbody></table></div>
+<p>The prediction is {{one.finPred}}, against {{one.avgWip}} counted, off by {{one.gap}}. With two reviewers the floor is steady and the prediction lands within {{two.gap}}. With one reviewer, work arrives faster than it leaves, so the pile keeps growing and finished work cannot describe it.</p>
+<p>The law itself is not broken. Count every task, finished or not: {{one.rate}} arrivals a minute times {{one.inSystem}} minutes is about {{one.avgWip}}, exactly what the model counted. The average over every task ({{one.inSystem}} minutes) is a little lower than the average over finished tasks ({{one.cycle}}), because the tasks that arrived last have not had time to wait yet. The finished-only number left out the tasks still waiting.</p>
+<p>That is why adding tasks does not add output. Send tasks every 3 minutes instead of every {{arriveEvery}} and the floor still finishes <strong>{{faster.finished}}</strong>. The {{faster.extra}} extra tasks become pile: {{faster.left}} left at the end instead of {{one.left}}, and the average task, counting unfinished ones, spends {{faster.inSystem}} minutes in the system instead of {{one.inSystem}}.</p>
+</details>
+
+<h2>Break it in the town</h2>
+<ol class="steps">
+<li>Open <a href="../index.html">the town</a>, press <strong>Restart</strong>, then <strong>Reviewers 2</strong>, and run at <strong>20×</strong> until about 14:00.</li>
+<li>Read the <strong>Little's Law check</strong> under Metrics. It should say <strong>holds</strong>.</li>
+<li>Press <strong>Reviewers 1</strong> and keep running. Watch the check drift and turn to <strong>off by</strong> as the pile grows.</li>
+</ol>
+
+<h2>A different situation</h2>
+<p>A support team closes 40 tickets a day, and each ticket takes 3 days from open to close. About how many tickets are open at any time? If marketing doubles the tickets coming in, what changes first: tickets closed, or tickets open?</p>
+
+<div class="monday"><h2>On Monday</h2>
+<p>For one queue you own, write down three numbers: items finished per day, average days an item takes, and items open right now. Multiply the first two. If the result is far below the third, your queue is growing.</p></div>
+
+<p class="note">The coffee shop and support team figures are made-up round numbers for practice. The town's numbers come from its illustrative model.</p>
+
+<section class="build" aria-labelledby="build-h">
+<h2 id="build-h">Build it yourself with AI</h2>
+<p>Optional. This prompt adds a Little's Law check to your simulator, computed only from its log. It is a starter for learning, not an analytics tool. Then check its work against the numbers below.</p>
+<div class="fundamental"><h3>The one rule</h3><p>Tasks in the system = tasks finished per minute × minutes each task takes. It holds only when work leaves about as fast as it arrives.</p></div>
+<h3>Starter prompt</h3>
+<div class="prompt"><button class="copy" type="button" data-copy="prompt">Copy prompt</button><pre id="prompt">Start from the single-file queue simulator with an event log that I built earlier (I will paste it below). Keep it one HTML file with no libraries. Using only the log, add a "Little's Law check":
+
+- Finished per minute = tasks finished ÷ minutes run.
+- Minutes each = the average time from arrival to finish of the finished tasks.
+- Predicted tasks in the system = finished per minute × minutes each.
+- Counted tasks in the system: at the start of each minute, before any work or arrival, count the tasks that have arrived and not finished. Average those counts over the run.
+
+Show the prediction next to the count. Show "holds" when the gap, as a share of the count rounded to a whole percent, is 10% or less; otherwise show "off by" and the percentage.</pre></div>
+<h3>What "done" looks like</h3>
+<ul class="done"><li>A small panel with the four numbers and a holds or off-by label.</li><li>Changing the reviewers and running again changes the label.</li></ul>
+<h3>Check the AI's work</h3>
+<ul class="checks"><li>2 reviewers: {{two.finRate}} finished per minute, predicted {{two.finPred}}, counted {{two.avgWip}}: {{two.verdict}}, off by {{two.gap}}.</li>
+<li>1 reviewer: predicted {{one.finPred}}, counted {{one.avgWip}}: {{l3.oneVerdict}}, off by {{one.gap}}.</li>
+<li>Using every task that arrived, finished or not: arrivals per minute × average minutes in the system is {{one.rate}} × {{one.inSystem}}, about {{one.avgWip}}, the count.</li>
+<li>If both say "holds", the AI is probably counting unfinished tasks in "minutes each". Ask it to use finished tasks only.</li></ul>
+</section>
+<nav class="pager"><a href="02-trace-vs-dashboard.html">← Lesson 2</a><a href="04-failure-modes.html">Next: failure modes →</a></nav>
+</main><script src="copy.js"></script></body></html>

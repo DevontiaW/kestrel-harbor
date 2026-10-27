@@ -1,0 +1,47 @@
+/* Kestrel Harbor practicum lessons: phone-first, offline, no external fonts. Colors match the town page. */
+:root{--paper:#f2f4ef;--white:#fff;--ink:#202723;--muted:#5d6b62;--line:#cbd3ca;--green:#2f7a5c;--blue:#3e7aa6;--amber:#b06a24;--red:#c2502e;--violet:#7b6aa8;--mono:'Cascadia Mono',Consolas,'SFMono-Regular',monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif}
+main{max-width:680px;margin:0 auto;padding:20px 16px 48px}
+a{color:var(--green)}a:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.crumbs{display:flex;justify-content:space-between;gap:10px;font:12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+h1{font-size:28px;line-height:1.2;margin:0 0 14px}h2{font-size:19px;margin:30px 0 8px}
+.idea{border-left:4px solid var(--green);background:var(--white);padding:12px 14px;margin:18px 0;font-weight:600}
+.predict{background:#fff8ec;border:1px solid #e8cfa8;border-radius:8px;padding:14px 16px;margin:20px 0}
+.predict p:first-child{margin-top:0;font-weight:600}
+details.reveal{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:12px 0 20px}
+details.reveal summary{cursor:pointer;font-weight:600;color:var(--green)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:16px 0;font-size:15px}
+.card h3{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.bars{display:grid;gap:8px}.bars .row{display:grid;grid-template-columns:9.5em 1fr;gap:8px;align-items:center}
+.bars .track{background:#eef1ec;border-radius:4px;height:22px;position:relative;overflow:hidden}
+.bars .fill{position:absolute;inset:0 auto 0 0;background:var(--c,var(--green));border-radius:4px;display:flex;align-items:center;padding-left:6px;color:#fff;font:600 13px var(--mono);white-space:nowrap}
+.trace{display:flex;height:28px;border-radius:4px;overflow:hidden;margin:8px 0}.trace .work{background:var(--green)}.trace .wait{background:repeating-linear-gradient(135deg,#e2cdb6 0 5px,#fff 5px 10px)}
+table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;padding:6px 4px;border-bottom:1px solid #e3e8e1}thead th{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}td.n{font-family:var(--mono)}
+ol.steps{padding-left:22px}ol.steps li{margin:6px 0}
+.monday{background:var(--white);border:2px solid var(--ink);border-radius:8px;padding:12px 16px;margin:24px 0}
+.monday h2{margin-top:0}
+.note{font-size:13px;color:var(--muted)}
+nav.pager{display:flex;justify-content:space-between;gap:10px;margin-top:30px;font-size:15px}
+@media(min-width:700px){body{font-size:18px}h1{font-size:34px}}
+/* Build it yourself with AI: a separate, clearly headed section after the lesson */
+.build{border-top:3px double var(--line);margin-top:36px;padding-top:6px}
+.build h3{font-size:16px;margin:18px 0 6px}
+.fundamental{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:8px;padding:10px 14px;margin:12px 0}
+.fundamental p{margin:6px 0}
+.prompt{position:relative;background:var(--white);border:1px solid var(--line);border-radius:8px;margin:10px 0}
+.prompt pre{margin:0;padding:48px 14px 14px;white-space:pre-wrap;word-break:break-word;font:14px/1.5 var(--mono);color:var(--ink)}
+.prompt .copy{position:absolute;top:8px;right:8px;min-height:36px;padding:4px 14px;border:1px solid var(--green);border-radius:6px;background:var(--green);color:#fff;font:600 14px system-ui,sans-serif;cursor:pointer}
+.prompt .copy:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+ul.checks li,ul.done li{margin:4px 0}
+.card svg{margin:4px auto}.card.map{padding:0;border:0;background:none}
+.arc{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:24px 0 4px}
+/* Dark mode: same layout, darker paper */
+@media (prefers-color-scheme:dark){
+:root{--paper:#161b18;--white:#202723;--ink:#e9eee7;--muted:#aab6ad;--line:#3a453e;--green:#5fb38c;--blue:#7fb2d8}
+.predict{background:#2b2418;border-color:#6b5532}
+.bars .track{background:#2a322d}.trace .wait{background:repeating-linear-gradient(135deg,#6b5a45 0 5px,#202723 5px 10px)}
+th,td{border-bottom-color:#33403a}.prompt .copy{color:#10221a}
+}
+@media (max-width:480px){.card table{font-size:13px}.card th,.card td{padding:6px 3px}.card thead th{font-size:10px;letter-spacing:0}}
+@media (max-width:360px){.card thead th{overflow-wrap:anywhere}}
