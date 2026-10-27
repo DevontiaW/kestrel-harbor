@@ -64,7 +64,25 @@ export function lessonNumbers() {
     noApproval: { finishedNo: String(noApproval.variant.finished), finishedDelta: String(noApproval.deltas.finished), systemBase: r1(noApproval.baseline.avgTimeInSystem), systemNo: r1(noApproval.variant.avgTimeInSystem) },
     approveAll: { waitHours: r0(approveAll.wait.approval / 60), inSystem: r1(approveAll.littlesLaw.avgTimeInSystem), finished: String(approveAll.done), left: String(approveAll.wip), approvalWait: String(approveAll.wait.approval), approverBusy: pct(approveAll.stations.find(s => s.id === 'approve').utilization), load: r0(approverLoadAll) },
     approveNth: nth(FLOOR.approveEvery), reworkNth: nth(FLOOR.reworkEvery),
+    trace: traceNumbers(one),
     ...governNumbers({ one, two, last, cut, noApproval, approveAll, outage }),
+  };
+}
+
+// Time in system for the one-reviewer default run: how the 64 finished tasks split, and three tasks traced end to end.
+// A new group, so the default-off fingerprint (which locks the older groups) is untouched.
+const HOUR = 60;
+function traceNumbers(floor) {
+  const life = t => t.finished - t.arrival, done = floor.done;
+  const one = id => {
+    const t = done.find(x => x.id === id), wait = life(t) - t.worked;
+    return { arrived: clock(t.arrival), finished: clock(t.finished), inSystem: String(life(t)), worked: String(t.worked), waited: String(wait), sentBack: t.reworked ? 'yes' : 'no' };
+  };
+  const firstLong = [...done].sort((a, b) => a.n - b.n).find(t => life(t) - t.worked >= HOUR);
+  return {
+    finished: String(done.length), under60: String(done.filter(t => life(t) < HOUR).length), from60to119: String(done.filter(t => life(t) >= HOUR && life(t) < 2 * HOUR).length),
+    over120: String(done.filter(t => life(t) >= 2 * HOUR).length), maxInSystem: String(Math.max(...done.map(life))),
+    t001: one('T-001'), t005: one('T-005'), t022: one('T-022'), firstWait60: firstLong?.id ?? 'none',
   };
 }
 

@@ -200,3 +200,14 @@ test('lesson 7: plain-words trip comes before the map, and the jargon notes come
   assert.ok(at('SIEM') > at('{{svg.enterpriseMap}}'), 'SIEM is explained after the picture');
   assert.ok(html.includes('only the tool-call log shows what was sent'));
 });
+
+test('trace group: one-reviewer time-in-system buckets and three traced tasks are pinned, and the sums hold', () => {
+  const t = numbers.trace;
+  assert.deepEqual([t.under60, t.from60to119, t.over120, t.finished, t.maxInSystem, t.firstWait60], ['15', '17', '32', '64', '217', 'T-022']);
+  assert.equal(Number(t.under60) + Number(t.from60to119) + Number(t.over120), Number(t.finished));
+  assert.equal(t.finished, numbers.one.finished);
+  assert.deepEqual(t.t001, { arrived: '08:04', finished: '08:20', inSystem: '16', worked: '16', waited: '0', sentBack: 'no' });
+  assert.deepEqual(t.t005, { arrived: '08:20', finished: '08:56', inSystem: '36', worked: '26', waited: '10', sentBack: 'yes' });
+  assert.deepEqual(t.t022, { arrived: '09:28', finished: '10:50', inSystem: '82', worked: '16', waited: '66', sentBack: 'no' });
+  for (const k of ['t001', 't005', 't022']) assert.equal(Number(t[k].worked) + Number(t[k].waited), Number(t[k].inSystem));
+});
